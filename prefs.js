@@ -118,7 +118,7 @@ Prefs.prototype = {
 
         //Refresh time
         let hboxRTime = newGtkBox();
-        vBoxSpinBtn("refreshtime", hboxRTime, "Refresh Time", "Change Refresh time value from anywhere b/w 1 to 10", 0.1, 10.0, 0.1, 1);
+        vBoxSpinBtn("refreshtime", hboxRTime, "Refresh Time", "Change Refresh time value from anywhere b/w 1 to 10", 1.0, 10.0, 0.1, 1);
 
         //For Modes
         let hboxMode = newGtkBox();
@@ -140,6 +140,10 @@ Prefs.prototype = {
         let hboxIconset = newGtkBox();
         vBoxAddSeleCt("chooseiconset", hboxIconset, "Choose Icons Set", [" 🡳,  🡱,  Σ ", " ↓,  ↑,  ∑ "], "Choose which icon set to display");
 
+        //For Toggling Old Icons
+        let hboxLimitUnit = newGtkBox();
+        vBoxAddSeleCt("limitunit", hboxLimitUnit, "Limit Unit", ["(None)", "K", "M", "G"], "Choose unit limitation set to display");
+      //
         //For Reversing the download and upload indicators
         let hboxRevInd = newGtkBox();
         vBoxAddTgglBtn(hboxRevInd, "Show Upload First", "reverseindicators", "Enabling it will reverse the upload and download speed indicators");

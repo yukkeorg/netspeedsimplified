@@ -25,6 +25,9 @@ install: convenience.js extension.js metadata.json prefs.js stylesheet.css schem
 	sleep 5
 	gnome-extensions enable $(EXT_NAME)
 
+schemas/gschemas.compiled:
+	(cd schemas; glib-compile-schemas .)
+
 remove:
 	rm -rf $(EXT_HOME)
 

@@ -42,6 +42,7 @@ function fetchSettings() {
         showTotalDwnld: settings.get_boolean('togglebool'),
         isVertical: settings.get_boolean('isvertical'),
         chooseIconSet: settings.get_int('chooseiconset'),
+        limitunit: settings.get_int('limitunit'),
         revIndicator: settings.get_boolean('reverseindicators'),
         lckMuseAct: settings.get_boolean('lockmouseactions'),
         nsPos: settings.get_int('wpos'),
@@ -58,6 +59,7 @@ function pushSettings() {
     settings.set_boolean('togglebool', crStng.showTotalDwnld);
     settings.set_boolean('isvertical', crStng.isVertical);
     settings.set_int('chooseiconset', crStng.chooseIconSet);
+    settings.set_int('limitunit', crStng.limitunit);
     settings.set_boolean('reverseindicators', crStng.revIndicator);
     settings.set_boolean('lockmouseactions', crStng.lckMuseAct);
     settings.set_int('wpos', crStng.nsPos);
@@ -84,7 +86,9 @@ function speedToString(amount, rMode = 0) {
         (rMode === 1 && (crStng.mode === 1 || crStng.mode === 3 || crStng.mode === 4)) ? v => v : //KB
         (rMode === 1 && (crStng.mode === 0 || crStng.mode === 2)) ? v => v.toLowerCase() : //kb
         (crStng.mode === 0 || crStng.mode === 2) ? v => v.toLowerCase() + "/s" : //kb/s
-        (crStng.mode === 1 || crStng.mode === 3) ? v => v + "/s" : v=>v); //KB/s
+        (crStng.mode === 1 || crStng.mode === 3) ? v => v + "/s" : //KB/s
+        v => v  // Others
+    );
 
     if (amount === 0) {
         return "0 "  + speed_map[0];
@@ -96,8 +100,11 @@ function speedToString(amount, rMode = 0) {
 
     let unit = 0;
     while (amount >= 1000) { // 1M=1024K, 1MB/s=1000MB/s
+        if (unit >= crStng.limitunit) {
+            break;
+        }
         amount /= 1000;
-        ++unit;
+        unit++;
     }
 
     function ChkifInt(amnt, digitsToFix = 1) {
@@ -372,7 +379,6 @@ function enable() {
     fetchSettings();
     //Run infinite loop.
     timeout_id = Mainloop.timeout_add(crStng.refreshTime * 1000.0, parseStat);
-    log("timeout_id:" + timeout_id + " value:" + (crStng.refreshTime * 1000));
 }
 
 function disable() {
